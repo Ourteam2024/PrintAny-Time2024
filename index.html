@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الطباعة عبر الجهاز المحلي</title>
+  <style>
+    /* التصميم العام */
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f6f9;
+      color: #333;
+      text-align: center;
+      background-image: url('sim.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-image: url('sim.png');
+
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin: 0;
+      padding: 20px;
+      color: #fff;
+      text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    header {
+      background-color: rgba(44, 62, 80, 0.8);
+      padding: 30px 20px;
+      margin-bottom: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    section {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      font-size: 1.8em;
+      margin-bottom: 15px;
+      color: #34495e;
+    }
+
+    input[type="file"], textarea {
+      width: 80%;
+      padding: 12px;
+      margin: 15px 0;
+      border: 1px solid #bdc3c7;
+      border-radius: 8px;
+      font-size: 1em;
+      color: #333;
+      background-color: #ecf0f1;
+    }
+
+    button {
+      background-color: #3498db;
+      color: #fff;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+      transform: scale(1.05);
+    }
+
+    #statusMessage {
+      margin-top: 20px;
+      font-weight: bold;
+      color: #e74c3c;
+    }
+
+    /* تخصيص التصميم للأجهزة المحمولة */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2em;
+      }
+
+      section {
+        padding: 20px;
+      }
+
+      input[type="file"], textarea {
+        width: 100%;
+      }
+
+      button {
+        width: 100%;
+        font-size: 1em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>طباعة الملفات أو النصوص عبر الجهاز المحلي</h1>
+  </header>
+
+  <section>
+    <h2>تحميل ملف للطباعة</h2>
+    <input type="file" id="fileInput">
+    <button onclick="printFile()">طباعة الملف</button>
+
+    <h2>أو أدخل نصًا للطباعة</h2>
+    <textarea id="textInput" rows="5" placeholder="أدخل النص هنا..."></textarea>
+    <button onclick="printText()">طباعة النص</button>
+
+    <p id="statusMessage"></p>
+  </section>
+
+  <script>
+    function printFile() {
+      const fileInput = document.getElementById('fileInput');
+      const statusMessage = document.getElementById('statusMessage');
+
+      if (fileInput.files.length === 0) {
+        statusMessage.textContent = "يرجى اختيار ملف للطباعة.";
+        statusMessage.style.color = "red";
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const fileURL = URL.createObjectURL(file);
+
+      const printWindow = window.open(fileURL, '_blank');
+      printWindow.focus();
+      printWindow.print();
+    }
+
+    function printText() {
+      const textInput = document.getElementById('textInput');
+      const statusMessage = document.getElementById('statusMessage');
+
+      if (textInput.value.trim() === "") {
+        statusMessage.textContent = "يرجى إدخال نص للطباعة.";
+        statusMessage.style.color = "red";
+        return;
+      }
+
+      const printWindow = window.open('', '_blank');
+      printWindow.document.write('<html><head><title>طباعة النص</title></head><body>');
+      printWindow.document.write('<pre>' + textInput.value + '</pre>');
+      printWindow.document.write('</body></html>');
+      printWindow.document.close();
+      printWindow.focus();
+      printWindow.print();
+    }
+  </script>
+
+</body>
+</html>
